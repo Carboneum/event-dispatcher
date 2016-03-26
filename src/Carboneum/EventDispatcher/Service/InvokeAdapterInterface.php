@@ -18,7 +18,7 @@ interface InvokeAdapterInterface
      * @param string  $method
      * @param EventInterface $event
      *
-     * @return null;
+     * @return null
      */
     public function invoke($service, $method, EventInterface $event);
 }
