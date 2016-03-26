@@ -1,0 +1,33 @@
+{
+  "name": "carboneum/event-dispatcher",
+  "type": "library",
+  "description": "Small library implementing subscriber pattern.",
+  "homepage": "http://github.com/carboneum/event-dispatcher",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Aleksandr Obukhov",
+      "email": "a.a.obukhov@gmail.com"
+    }
+  ],
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/carboneum/contextual-exception"
+    }
+  ],
+  "require": {
+    "php": ">=5.5.0",
+    "carboneum/contextual-exception": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "*",
+    "codeclimate/php-test-reporter": "*"
+  },
+  "autoload": {
+    "psr-0": {
+      "Carboneum\\EventDispatcher\\": "src",
+      "CarboneumTest\\EventDispatcher\\": "test"
+    }
+  }
+}
