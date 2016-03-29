@@ -21,7 +21,7 @@ class SubscriptionMapper
     public function getSubscriptionsForEvent(EventInterface $event)
     {
         if (isset($this->subscriptions[$event->getEventName()])) {
-            foreach ($this->subscriptions[$event->getEventName()] as $priority => $subscriptions) {
+            foreach ($this->subscriptions[$event->getEventName()] as $subscriptions) {
                 /** @var Subscription $subscription */
                 foreach ($subscriptions as $subscription) {
                     yield $subscription;

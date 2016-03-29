@@ -21,16 +21,33 @@ class SubscriptionFactory
      */
     public function create(array $subscriptionConfig)
     {
-        foreach ([Subscription::EVENT_NAME, Subscription::SERVICE_LOCATOR, Subscription::METHOD_NAME] as $key) {
-            if (!isset($subscriptionConfig[$key])) {
-                throw new SubscriptionConfig\MissingKeyException($key);
-            }
+        $this->validateSubscription($subscriptionConfig);
 
-            if (!is_string($subscriptionConfig[$key])) {
-                throw new SubscriptionConfig\WrongTypeException($key, 'string', gettype($subscriptionConfig[$key]));
-            }
-        }
+        return new Subscription(
+            $subscriptionConfig[Subscription::EVENT_NAME],
+            $subscriptionConfig[Subscription::SERVICE_LOCATOR],
+            $subscriptionConfig[Subscription::METHOD_NAME],
+            $this->getPriority($subscriptionConfig)
+        );
+    }
 
+    /**
+     * @param array $subscriptionsConfig
+     *
+     * @return Subscription[]
+     */
+    public function createList(array $subscriptionsConfig)
+    {
+        return array_map([$this, 'create'], $subscriptionsConfig);
+    }
+
+    /**
+     * @param array $subscriptionConfig
+     * @return array
+     * @throws SubscriptionConfig\WrongTypeException
+     */
+    private function getPriority(array $subscriptionConfig)
+    {
         $priority = 0;
         if (isset($subscriptionConfig[Subscription::PRIORITY])) {
             $priority = $subscriptionConfig[Subscription::PRIORITY];
@@ -40,21 +57,25 @@ class SubscriptionFactory
             throw new SubscriptionConfig\WrongTypeException(Subscription::PRIORITY, 'int', gettype($priority));
         }
 
-        return new Subscription(
-            $subscriptionConfig[Subscription::EVENT_NAME],
-            $subscriptionConfig[Subscription::SERVICE_LOCATOR],
-            $subscriptionConfig[Subscription::METHOD_NAME],
-            $priority
-        );
+        return $priority;
     }
 
     /**
-     * @param array $subscriptionListConfig
+     * @param array $subscriptionConfig
      *
-     * @return Subscription[]
+     * @throws SubscriptionConfig\MissingKeyException
+     * @throws SubscriptionConfig\WrongTypeException
      */
-    public function createList(array $subscriptionListConfig)
+    private function validateSubscription(array $subscriptionConfig)
     {
-        return array_map([$this, 'create'], $subscriptionListConfig);
+        foreach ([Subscription::EVENT_NAME, Subscription::SERVICE_LOCATOR, Subscription::METHOD_NAME] as $key) {
+            if (!isset($subscriptionConfig[$key])) {
+                throw new SubscriptionConfig\MissingKeyException($key);
+            }
+
+            if (!is_string($subscriptionConfig[$key])) {
+                throw new SubscriptionConfig\WrongTypeException($key, 'string', gettype($subscriptionConfig[$key]));
+            }
+        }
     }
 }
