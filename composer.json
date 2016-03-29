@@ -25,7 +25,7 @@
     "codeclimate/php-test-reporter": "*"
   },
   "autoload": {
-    "psr-0": {
+    "psr-4": {
       "Carboneum\\EventDispatcher\\": "src",
       "CarboneumTest\\EventDispatcher\\": "test"
     }
